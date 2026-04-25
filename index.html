@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="description"
+        content="Discover the #1 Billboard songs from your birth year and month. A musical time machine.">
+    <title>TopSong â€” Discover Your Birthday Soundtrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="logo">
+            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+            </svg>
+            <span>TopSong</span>
+        </a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main class="main-content">
+        <section class="hero" id="hero">
+            <span class="hero-tagline">DISCOVER YOUR SOUNDTRACK</span>
+            <h1>What was the <span class="highlight">#1 song</span><br>on your <span class="highlight">special
+                    day</span>?</h1>
+            <p class="hero-subtitle">Enter your birthday and we'll find the top song<br>from that year and that month.
+            </p>
+
+            <!-- Input Card -->
+            <div class="input-card" id="inputCard">
+                <div class="input-header">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                    <span>Enter your birthday</span>
+                </div>
+                <div class="input-row">
+                    <input type="date" id="bdayInput" required min="1946-01-01" max="2025-12-31">
+                    <button class="btn-search" id="searchBtn">
+                        Find My Top Songs
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18"
+                            height="18">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="privacy-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                    We value your privacy. Your data is never stored.
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div class="error-msg" id="errorMsg"></div>
+        </section>
+
+        <!-- Loading -->
+        <div class="loader-container" id="loaderContainer">
+            <div class="loader-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <p class="loader-text">Searching the charts...</p>
+        </div>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection">
+            <div class="results-divider">
+                <span>Here are your results</span>
+            </div>
+
+            <div class="results-grid" id="resultsGrid">
+                <!-- Year Card -->
+                <div class="result-card" id="yearCard">
+                    <div class="card-top">
+                        <div class="card-label">
+                            <svg class="card-label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" width="16" height="16">
+                                <path d="M9 18V5l12-2v13" />
+                                <circle cx="6" cy="18" r="3" />
+                                <circle cx="18" cy="16" r="3" />
+                            </svg>
+                            THE #1 SONG
+                        </div>
+                        <div class="card-heading">Of The Year</div>
+                        <span class="time-badge" id="yearBadge">2000</span>
+                    </div>
+                    <div class="card-info">
+                        <div class="song-title" id="yearTitle">-</div>
+                        <div class="artist-name" id="yearArtist">-</div>
+                    </div>
+                    <div class="video-wrap" id="yearVideo"></div>
+                </div>
+
+                <!-- Month Card -->
+                <div class="result-card" id="monthCard">
+                    <div class="card-top">
+                        <div class="card-label">
+                            <svg class="card-label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" width="16" height="16">
+                                <path d="M9 18V5l12-2v13" />
+                                <circle cx="6" cy="18" r="3" />
+                                <circle cx="18" cy="16" r="3" />
+                            </svg>
+                            THE #1 SONG
+                        </div>
+                        <div class="card-heading">Of The Month</div>
+                        <span class="time-badge" id="monthBadge">JAN 2000</span>
+                    </div>
+                    <div class="card-info">
+                        <div class="song-title" id="monthTitle">-</div>
+                        <div class="artist-name" id="monthArtist">-</div>
+                    </div>
+                    <div class="video-wrap" id="monthVideo"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="footer">
+        <p>Songs are based on Billboard Hot 100 charts.</p>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
