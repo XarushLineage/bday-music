@@ -61,12 +61,6 @@ function buildYouTubeFallback(song, label = "Watch on YouTube") {
     </a>`;
 }
 
-function buildCardArt(song) {
-    if (!song || !song.ytId) return "";
-    const thumb = `https://img.youtube.com/vi/${song.ytId}/hqdefault.jpg`;
-    return `<div class="card-art" style="background-image: url('${thumb}')"></div>`;
-}
-
 function buildVideoEmbed(song) {
     if (!song || !song.ytId || window.location.protocol === "file:") {
         return buildYouTubeFallback(song);
@@ -104,6 +98,22 @@ function getRandomDate() {
         String(date.getMonth() + 1).padStart(2, "0"),
         String(date.getDate()).padStart(2, "0")
     ].join("-");
+}
+
+function getDaysInMonth(year, monthIndex) {
+    return new Date(year, monthIndex + 1, 0).getDate();
+}
+
+function setPageBackground(yearSong) {
+    if (!yearSong || !yearSong.ytId) {
+        document.body.classList.remove("has-year-background");
+        document.body.style.removeProperty("--page-bg-image");
+        return;
+    }
+
+    const thumb = `https://img.youtube.com/vi/${yearSong.ytId}/hqdefault.jpg`;
+    document.body.style.setProperty("--page-bg-image", `url("${thumb}")`);
+    document.body.classList.add("has-year-background");
 }
 
 // ---- Data Lookup ----
@@ -153,11 +163,11 @@ function renderTimeline(year) {
     timelineList.innerHTML = years.map((item) => {
         const song = BILLBOARD.yearly[item];
         const activeClass = item === year ? " active" : "";
-        return `<div class="timeline-item${activeClass}">
+        return `<button class="timeline-item${activeClass}" type="button" data-year="${item}">
             <span class="timeline-year">${item}</span>
             <strong>${song.title}</strong>
             <span>${song.artist}</span>
-        </div>`;
+        </button>`;
     }).join("");
 }
 
@@ -165,13 +175,29 @@ function updateCard(titleEl, artistEl, badgeEl, videoEl, song, badgeText) {
     if (song) {
         titleEl.textContent = song.title;
         artistEl.textContent = song.artist;
-        videoEl.innerHTML = buildCardArt(song) + buildVideoEmbed(song);
+        videoEl.innerHTML = buildVideoEmbed(song);
     } else {
         titleEl.textContent = "Data unavailable";
         artistEl.textContent = "Try another date; monthly data starts in August 1958";
         videoEl.innerHTML = "";
     }
     badgeEl.textContent = badgeText;
+}
+
+function jumpToYear(targetYear) {
+    if (!bdayInput.value) return;
+
+    const [, monthText, dayText] = bdayInput.value.split("-");
+    const month = parseInt(monthText, 10) - 1;
+    const day = Math.min(parseInt(dayText, 10), getDaysInMonth(targetYear, month));
+
+    bdayInput.value = [
+        targetYear,
+        monthText,
+        String(day).padStart(2, "0")
+    ].join("-");
+
+    runSearch();
 }
 
 function animateCards() {
@@ -230,6 +256,7 @@ function runSearch() {
         const yearSong = lookupYear(year);
         const monthSong = lookupMonth(year, month);
 
+        setPageBackground(yearSong);
         renderSummary(year, month, yearSong, monthSong);
         renderTimeline(year);
 
@@ -259,6 +286,13 @@ searchBtn.addEventListener("click", runSearch);
 randomBtn.addEventListener("click", () => {
     bdayInput.value = getRandomDate();
     runSearch();
+});
+
+timelineList.addEventListener("click", (event) => {
+    const item = event.target.closest(".timeline-item");
+    if (!item) return;
+
+    jumpToYear(parseInt(item.dataset.year, 10));
 });
 
 shareBtn.addEventListener("click", () => {
