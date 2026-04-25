@@ -37,7 +37,7 @@ const BILLBOARD = {
     1969: { title: "Sugar, Sugar", artist: "The Archies", ytId: "h9nE2spOw_o" },
     1970: { title: "Bridge over Troubled Water", artist: "Simon & Garfunkel", ytId: "4G-YQA_bsOU" },
     1971: { title: "Joy to the World", artist: "Three Dog Night", ytId: "GFMr7GJFBwo" },
-    1972: { title: "The First Time Ever I Saw Your Face", artist: "Roberta Flack", ytId: "GkLGA1VAmjg" },
+    1972: { title: "The First Time Ever I Saw Your Face", artist: "Roberta Flack", ytId: "VqW-eO3jTVU" },
     1973: { title: "Tie a Yellow Ribbon Round the Ole Oak Tree", artist: "Dawn ft. Tony Orlando", ytId: "Yhi4kkjB5z4" },
     1974: { title: "The Way We Were", artist: "Barbra Streisand", ytId: "yHSYY5m5Lj0" },
     1975: { title: "Love Will Keep Us Together", artist: "Captain & Tennille", ytId: "RBCaUmMaJYI" },
