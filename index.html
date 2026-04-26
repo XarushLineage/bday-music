@@ -28,10 +28,7 @@
             <span>TopSong</span>
         </a>
         <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#maintenance">Maintain</a>
-            <a href="#contact">Contact</a>
+            <button class="nav-button" id="howItWorksBtn" type="button">How It Works</button>
         </div>
     </nav>
 
@@ -142,6 +139,7 @@
                         <div class="song-title" id="yearTitle">-</div>
                         <div class="artist-name" id="yearArtist">-</div>
                     </div>
+                    <div class="special-banner" id="specialBanner" hidden></div>
                     <div class="video-wrap" id="yearVideo"></div>
                 </div>
 
@@ -177,34 +175,26 @@
             </div>
         </section>
 
-        <section class="info-section" id="about">
-            <div class="section-heading">
-                <span>About The Data</span>
-                <p>Year-end results go back farther than the Hot 100 itself, so early years use Billboard's
-                    pre-Hot-100 retail-sales lists. Monthly results start in August 1958, when the Hot 100 launched.</p>
-            </div>
-        </section>
-
-        <section class="info-section" id="how-it-works">
-            <div class="section-heading">
-                <span>How It Works</span>
-                <p>The app looks up your selected year and month locally, then uses stored YouTube IDs for playback.
-                    If an embed is unavailable, the card still gives you a direct YouTube search link.</p>
-            </div>
-        </section>
-
-        <section class="info-section" id="maintenance">
-            <div class="section-heading">
-                <span>Maintenance</span>
-                <p>Run <code>node scripts/refresh-youtube-ids.js</code> to audit video IDs, then add
-                    <code>--write</code> to replace unavailable or non-embeddable matches.</p>
-            </div>
-        </section>
     </main>
+
+    <div class="modal-backdrop" id="infoModal" hidden>
+        <section class="info-modal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+            <button class="modal-close" id="modalCloseBtn" type="button" aria-label="Close">x</button>
+            <div class="section-heading">
+                <span id="infoModalTitle">How It Works</span>
+                <p>Pick a birthday and TopSong looks up the year-end #1 song plus the monthly #1 when monthly Hot 100 data is available.</p>
+            </div>
+            <div class="modal-copy">
+                <p>Year-end results go back to 1946. Entries from 1946 through 1957 use Billboard's pre-Hot-100 retail-sales lists.</p>
+                <p>Monthly results begin in August 1958, when the Billboard Hot 100 launched. If your date has no monthly entry, the app centers the year result by itself.</p>
+                <p>Videos use stored YouTube IDs. If an embed cannot load, each card still links directly to YouTube.</p>
+            </div>
+        </section>
+    </div>
 
     <!-- Footer -->
     <footer class="footer" id="footer">
-        <p id="contact">Songs are based on Billboard chart history. Built for GitHub Pages.</p>
+        <p>Songs are based on Billboard chart history. Built for GitHub Pages.</p>
     </footer>
 
     <script src="data.js"></script>

@@ -21,10 +21,14 @@ const bdayInput = document.getElementById("bdayInput");
 const searchBtn = document.getElementById("searchBtn");
 const randomBtn = document.getElementById("randomBtn");
 const shareBtn = document.getElementById("shareBtn");
+const howItWorksBtn = document.getElementById("howItWorksBtn");
+const modalCloseBtn = document.getElementById("modalCloseBtn");
 const loaderEl = document.getElementById("loaderContainer");
 const resultsEl = document.getElementById("resultsSection");
+const resultsGrid = document.getElementById("resultsGrid");
 const errorEl = document.getElementById("errorMsg");
 const heroEl = document.getElementById("hero");
+const infoModal = document.getElementById("infoModal");
 const resultSummary = document.getElementById("resultSummary");
 const timelineList = document.getElementById("timelineList");
 
@@ -32,7 +36,9 @@ const yearTitle = document.getElementById("yearTitle");
 const yearArtist = document.getElementById("yearArtist");
 const yearBadge = document.getElementById("yearBadge");
 const yearVideo = document.getElementById("yearVideo");
+const specialBanner = document.getElementById("specialBanner");
 
+const monthCard = document.getElementById("monthCard");
 const monthTitle = document.getElementById("monthTitle");
 const monthArtist = document.getElementById("monthArtist");
 const monthBadge = document.getElementById("monthBadge");
@@ -156,6 +162,18 @@ function renderSummary(year, month, yearSong, monthSong) {
     `;
 }
 
+function updateResultLayout(monthSong) {
+    const hasMonthSong = Boolean(monthSong);
+    monthCard.hidden = !hasMonthSong;
+    resultsGrid.classList.toggle("single-card", !hasMonthSong);
+}
+
+function updateSpecialBanner(dateValue) {
+    const isAnniaDate = dateValue === "1972-12-31";
+    specialBanner.hidden = !isAnniaDate;
+    specialBanner.textContent = isAnniaDate ? "Hello Annia, my dear sister." : "";
+}
+
 function renderTimeline(year) {
     const years = [year - 2, year - 1, year, year + 1, year + 2]
         .filter((item) => BILLBOARD.yearly[item]);
@@ -201,7 +219,7 @@ function jumpToYear(targetYear) {
 }
 
 function animateCards() {
-    const cards = document.querySelectorAll(".result-card");
+    const cards = document.querySelectorAll(".result-card:not([hidden])");
     cards.forEach((card, i) => {
         card.classList.remove("show");
         setTimeout(() => card.classList.add("show"), 200 + i * 200);
@@ -225,6 +243,18 @@ async function shareResult(dateValue) {
     setTimeout(() => {
         shareBtn.innerHTML = shareButtonMarkup;
     }, 1800);
+}
+
+function openInfoModal() {
+    infoModal.hidden = false;
+    document.body.classList.add("modal-open");
+    modalCloseBtn.focus();
+}
+
+function closeInfoModal() {
+    infoModal.hidden = true;
+    document.body.classList.remove("modal-open");
+    howItWorksBtn.focus();
 }
 
 // ---- Main Search Handler ----
@@ -257,11 +287,17 @@ function runSearch() {
         const monthSong = lookupMonth(year, month);
 
         setPageBackground(yearSong);
+        updateResultLayout(monthSong);
+        updateSpecialBanner(val);
         renderSummary(year, month, yearSong, monthSong);
         renderTimeline(year);
 
         updateCard(yearTitle, yearArtist, yearBadge, yearVideo, yearSong, String(year));
-        updateCard(monthTitle, monthArtist, monthBadge, monthVideo, monthSong, `${MONTH_NAMES[month]} ${year}`);
+        if (monthSong) {
+            updateCard(monthTitle, monthArtist, monthBadge, monthVideo, monthSong, `${MONTH_NAMES[month]} ${year}`);
+        } else {
+            monthVideo.innerHTML = "";
+        }
 
         loaderEl.classList.remove("visible");
         resultsEl.classList.add("visible");
@@ -286,6 +322,21 @@ searchBtn.addEventListener("click", runSearch);
 randomBtn.addEventListener("click", () => {
     bdayInput.value = getRandomDate();
     runSearch();
+});
+
+howItWorksBtn.addEventListener("click", openInfoModal);
+modalCloseBtn.addEventListener("click", closeInfoModal);
+
+infoModal.addEventListener("click", (event) => {
+    if (event.target === infoModal) {
+        closeInfoModal();
+    }
+});
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !infoModal.hidden) {
+        closeInfoModal();
+    }
 });
 
 timelineList.addEventListener("click", (event) => {
